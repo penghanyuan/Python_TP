@@ -14,7 +14,7 @@ def func():
                 print('Choisir un nom de fichier!')
             else:
                 print('Nom du fichier: ', filename)
-                with open(filename, "a") as fic:
+                with open(filename, "a", encoding="utf-8") as fic:
                     text = input("Votre Texte: ")
                     fic.write(text)
         elif inp == '3':
@@ -22,7 +22,7 @@ def func():
                 print('Choisir un nom de fichier!')
             else:
                 print('Nom du fichier: ', filename)
-                with open(filename, "r") as fic:
+                with open(filename, "r", encoding="utf-8") as fic:
                     print(fic.read(),end='\n')
         elif inp == '4':
             with open(filename, "w+") as fic:

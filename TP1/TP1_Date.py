@@ -6,7 +6,7 @@ class Date:
             return True
         else:
             return False
-    def  __lt__(self,other):
+    def __lt__(self,other):
         if self.date < other.date:
             return True
         else:
