@@ -11,7 +11,9 @@ import numpy as np
 
 def creationA():
     #Créer un tableau de dimension 3 avec un shape de (4, 3, 2) remplit avec des nombres aléatoires.
-    a1 = np.random.empty(0,10,size=[4,3,2])
+    # a1 = np.random.empty(0,10,size=[4,3,2])
+    a1 = np.random.randint((4,3,2))
+    # a1 = np.empty((2,3,4))
 
     #Vous afficherez les attributs du tableau : ndim, shape, size, dtype, itemsize, data.
     print(a1)
@@ -53,12 +55,12 @@ def creationB():
     print("+\n", b1_mat + b2_mat)
 
     print("dot\n", np.dot(b1_mat, b2_mat))
-    print("dot :Pour un tableau de rang 1, effectuez la multiplication de position correspondante puis faire la somme；")
-    print("Pour un tableau à deux dimensions dont le rang n'est pas égal à 1, effectuez la multiplication matricielle.")
+    # print("dot :Pour un tableau de rang 1, effectuez la multiplication de position correspondante puis faire la somme；")
+    # print("Pour un tableau à deux dimensions dont le rang n'est pas égal à 1, effectuez la multiplication matricielle.")
 
     print("*\n", (b1_mat) * (b2_mat))
-    print("(*:  Effectuer la multiplication de position correspondante sur le tableau;\
-        Effectuer une multiplication matricielle sur des matrices)")
+    # print("(*:  Effectuer la multiplication de position correspondante sur le tableau;\
+        # Effectuer une multiplication matricielle sur des matrices)")
 
     print("multiply\n", np.multiply(b1_mat, b2_mat))
     print("transposer of b1_mat: \n", np.transpose(b1_mat))
