@@ -114,10 +114,231 @@ Résultat:
 
 
 ### TP2 - Tkinter
+#### 2.1 Introduction simple
+Tkinter (de l'anglais Tool kit interface) est la bibliothèque graphique libre d'origine pour le langage Python, permettant la création d'interfaces graphiques. Tkinter est intégré au paquet d'installation de python pour gérer rapidement des interfaces graphiques simples.
+
+
+Tkinter offre une variété de composant d'interface graphique tels que `Boutons`, `Label`, `Frame`, `Canvas`, `Text`, `Menu`, `Message`, `Scrollbar`,etc.
+
+Il possède des attributs standards comme: `Dimension`, `Color`, `Font`, `Cusor`, `Anchor`, etc.
+
+Le composant d'interface graphique de Tkinter a une méthode de gestion d’état géométrique spécifique qui gère l’organisation complète de la zone de contrôle. Voici les trois classes de gestion de géométrie exposée par Tkinter: `package()`, `grid()`, `place()`.
+
+#### 2.2 Travail du TP
+Une calculatrice avec deux mode(standard et scientifique) réalisée par la bibliothèque `Math` et `Tkinter`. Ici, on a utilisé `grid()`:
+
+```python
+def calBasique():
+    global bg
+    bg.title('Calculatrice')
+    for btn in list_button_sci:
+        btn.destroy()
+    # bg.update_idletasks()
+    # bg.geometry(400*200)
+    global entry
+    entry = Entry(justify='right')
+    entry.grid(row=0, column=0, columnspan=5, sticky=N+W+S+E)
+
+    button_c = Button(text='C', relief=RIDGE,width=5, command =lambda : clear(entry)).grid(row=4,column=1)
+    button0 = Button(text='0', relief=RIDGE,width=5, command =lambda : get_input(entry,'0')).grid(row=4,column=2)
+    button_ac = Button(text='AC', relief=RIDGE,width=5, command =lambda : all_clear(entry)).grid(row=4,column=3)
+
+    button1 = Button(text='1', relief=RIDGE,width=5, command =lambda : get_input(entry,'1')).grid(row=3,column=1)
+    button2 = Button(text='2', relief=RIDGE,width=5, command =lambda : get_input(entry,'2')).grid(row=3,column=2)
+    button3 = Button(text='3', relief=RIDGE,width=5, command =lambda : get_input(entry,'3')).grid(row=3,column=3)
+
+    button4 = Button(text='4', relief=RIDGE,width=5, command =lambda : get_input(entry,'4')).grid(row=2,column=1)
+    button5 = Button(text='5', relief=RIDGE,width=5, command =lambda : get_input(entry,'5')).grid(row=2,column=2)
+    button6 = Button(text='6', relief=RIDGE,width=5, command =lambda : get_input(entry,'6')).grid(row=2,column=3)
+
+    button7 = Button(text='7', relief=RIDGE,width=5, command =lambda : get_input(entry,'7')).grid(row=1,column=1)
+    button8 = Button(text='8', relief=RIDGE,width=5, command =lambda : get_input(entry,'8')).grid(row=1,column=2)
+    button9 = Button(text='9', relief=RIDGE,width=5, command =lambda : get_input(entry,'9')).grid(row=1,column=3)
+
+
+    button_plus = Button(text='+', relief=RIDGE,width=5, command =lambda : get_input(entry,'+')).grid(row=1,column=4)
+    button_minus = Button(text='-', relief=RIDGE,width=5, command =lambda : get_input(entry,'-')).grid(row=2,column=4)
+    button_multi = Button(text='*', relief=RIDGE,width=5, command =lambda : get_input(entry,'*')).grid(row=3,column=4)
+    button_div = Button(text='/', relief=RIDGE,width=5, command =lambda : get_input(entry,'/')).grid(row=4,column=4)
+
+    button_point = Button(text='.', relief=RIDGE,width=5, command =lambda : get_input(entry,'.')).grid(row=5,column=2)
+    button_equ = Button(text='=', relief=RIDGE,width=5, command =lambda : cal(entry)).grid(row=5,column=3)
+```
+Pour chaque opération, on a défini sa fonction en utilisant des méthodes de `Math`, par exemple `calSin`(C'est pareil pour les autres opérations):
+```python
+def calSin(entry):
+    input = entry.get().strip()
+    resultSin = math.sin((int(input)/180)* math.pi)
+    all_clear(entry)
+    entry.insert(END, resultSin)
+```
+Les résultats:
+![c_standard](images/2018/11/c-standard.png)
+
+![c_scientifique](images/2018/11/c-scientifique.png)
 
 ### TP3 - Exceptions et chiffrement
 
 ### TP4 - Matplotlib
+#### 4.1 Introduction simple
+Matplotlib est une bibliothèque du langage de programmation Python destinée à tracer et visualiser des données sous formes de graphiques.Elle peut être combinée avec les bibliothèques python de calcul scientifique NumPy et SciPy.
+
+Plusieurs points intéressants de Matplotlib:
+
+- Export possible en de nombreux formats matriciels (PNG, JPEG...) et vectoriels (PDF, SVG...)
+- Documentation en ligne en quantité, nombreux exemples disponibles sur internet
+- Forte communauté très active
+- Interface pylab : reproduit fidèlement la syntaxe MATLAB
+- Bibliothèque haut niveau : idéale pour le calcul interactif
+
+Il peut réaliser plusieurs types de graphiques:
+- Graphique linéaire
+- Nuage de points
+- Carte de contour
+- Diagramme à barres
+- L'histogramme
+- Graphiques 3D,
+- Même des animations graphiques et ainsi de suite.
+
+#### 4.2 Travail du TP
+J'ai créé une interface avec des buttons et un menu en haut qui contient tous ce qu'on a fait de ce TP. L'utilisateur peut faire des opérations depuis cette interface (comme ci-dessous).
+![interface_utilisateur](images/2018/11/interface-utilisateur.png)
+
+Afficher la courbe de ces données dans une fenêtre matplotlib et afficher plusieurs courbes avec styles et couleurs variés (voir fig1 et fig2), et puis modifier les noms des axes, la légende, ajouter des flèches pour montrer des zones(voir fig3):
+```python
+def drawScatter():
+
+    global plot
+    plot.figure('Scatter fig')
+
+    ax = plot.gca()
+    ax.set_xlabel('x')
+    ax.set_ylabel('y')
+
+    l1 = ax.scatter(numbers_x, numbers_y, c='g', marker = 'o', s=10, alpha=0.5)
+    l2 = ax.scatter(numbers_x, numbers_y2, c='blue', marker = '*', s=10, alpha=0.5)
+
+    plot.plot([0, 10], [0, 30], color = 'red', linestyle = 'solid')
+    plot.annotate(text="this point is important", xy=(5, 15), xytext=(6, 16),arrowprops={"arrowstyle":"->"})
+
+    plot.legend(handles = [l1, l2,], labels = ['a', 'b'], loc = 'best')
+    plot.show()
+```
+
+
+```python
+def drawLine():
+    global plot
+    plot.figure('Line fig')
+    # plot.xlabel('X axis')
+    # plot.ylabel('Y axis')
+    ax = plot.gca()
+    ax.set_xlabel('x')
+    ax.set_ylabel('y')
+
+    g1 = ax.plot(numbers_x, numbers_y, c='r', linewidth=1, alpha=0.6)
+    g2 = ax.plot(numbers_x, numbers_y2, color='#054E9F', linewidth=1, alpha=0.6)
+    g3 = ax.plot(numbers_x, numbers_y3, color='#1DF09B', linewidth=1, alpha=0.6)
+    plot.legend(handles = [g1,g2,g3,], labels = ['line1', 'line2','line3'], loc = 'best')
+    plot.show()
+```
+![scatter_line](images/2018/11/scatter-line.png)
+![](images/2018/11/scatter.png)
+
+
+Afficher un histogramme et un camembert:
+```python
+def drawHisto():
+
+    global plot
+    plot.figure('Historique Bar fig')
+    ax = plot.gca()
+    ax.set_xlabel('value')
+    ax.set_ylabel('count')
+
+    xticks = np.arange(1, len(numbers_x)+1)
+    bar_width=0.5
+
+    ax.bar(xticks, numbers_y, width=bar_width, edgecolor='none')
+    ax.set_xticks(xticks)
+
+    ax.set_xticklabels(numbers_x)
+    ax.set_xlim(0,len(xticks))
+    plot.show()
+```
+
+```python
+def drawCamenbert():
+
+    plot.figure('Camenbert fig',figsize = (5, 5))
+    x = [1, 2, 3, 4, 10]
+    plot.pie(x, labels = ['A', 'B', 'C', 'D', 'E'],
+           colors = ['red', 'green', 'yellow', 'blue', 'pink'],
+           explode = [0, 0.2, 0, 0, 0],
+           autopct = lambda x: str(round(x, 2)) + '%',
+           pctdistance = 0.7, labeldistance = 0.4,
+           shadow = True)
+    plot.legend(loc='upper left')
+    plot.show()
+```
+![histo_camenbert](images/2018/11/histo-camenbert.png)
+
+Mais on a trouvé qu'on peut ouvrir qu'une image chaque fois donc on a apris comment mettre plusieurs figures dans une fenêtre en utilisant `subplot`:
+```python
+def showAllFigs():
+    fig = plot.figure()
+    ax1 = fig.add_subplot(223)
+    ax2 = fig.add_subplot(221)
+    ax3 = fig.add_subplot(222)
+    ax4 = fig.add_subplot(224)
+
+    ax1.plot(range(5), color = 'blue')
+    ax2.bar(range(5), range(5), color = 'green')
+    ax3.plot(range(5), color = 'red')
+    ax4.plot(range(5), color = 'black')
+```
+![plusieur_figures](images/2018/11/plusieur-figures.png)
+
+
+Afficher une surface 2D dans un espace 3D (mesh):
+```python
+def mesh_2d_3d():
+    fig = plot.figure('3D Mesh fig') #titre
+    ax = fig.add_subplot(111, projection='3d') #une image en 3D
+
+    x = np.random.sample(100)
+    y = np.random.sample(100)
+
+    ax.set_xlim(0, 1)
+    ax.set_ylim(0, 1)
+    ax.set_zlim(0, 1)
+    ax.set_xlabel('X')
+    ax.set_ylabel('Y')
+    ax.set_zlabel('Z')
+
+    ax.scatter(x, y, zs=0, zdir='y', label='points in (x,z)')
+    ax.legend()
+    plot.show()
+```
+![2d_in_3d](images/2018/11/2d-in-3d.png)
+
+Les deux images ci-dessus sont 2D dans un espace 3D, en plus on a essayé de faire un graphe 3D dans un espace 3D:
+```python
+def mesh_3d():
+    fig = plot.figure('3D Mesh fig')
+    ax = fig.add_subplot(111, projection='3d')
+
+    x = y = np.arange(-3.0, 3.0, 0.05)
+    X, Y = np.meshgrid(x, y)
+    zs = np.array([fun(x,y) for x,y in zip(np.ravel(X), np.ravel(Y))])
+    Z = zs.reshape(X.shape)
+
+    ax.plot_surface(X,Y,Z)
+    plot.show()
+```
+![3d](images/2018/11/3d.png)
+#### Conclusion
+Après des recherches et études, on peut trouver que cet outil Matplotlib est très pratique, il peut faire nombreux types de figures avec plusieurs attributs, comme couleur, forme, taille etc. Il peut bien montrer des données avec une façon visuelle.
 
 ### TP5 - Base de données
 

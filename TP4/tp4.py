@@ -128,8 +128,8 @@ def fun(x, y):
   return x**2 + y
 
 def mesh_2d_3d():
-    fig = plot.figure('3D Mesh fig')
-    ax = fig.add_subplot(111, projection='3d')
+    fig = plot.figure('3D Mesh fig') # titre
+    ax = fig.add_subplot(111, projection='3d') #une image en 3D
 
 
     # x = y = np.arange(-3.0, 3.0, 0.05)
