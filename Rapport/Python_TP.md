@@ -179,6 +179,42 @@ Les résultats:
 
 ### TP3 - Exceptions et chiffrement
 
+#### Exceptions et assertion
+
+Pour la partie de exceptions et assertion, nous les avons ajouté dans les tps précédents.
+
+#### Chiffrement
+
+Nous avons fait une interface ci-dessous avec Tkinter pour réaliser cette partie.
+
+![user info](images/2018/11/user-info.png)
+
+Après avoir saisi le login et mot de passe, vous pouvez cilquer `Store info` pour stocker les informations dans un fichier `userinfo.json`.
+
+![json](images/2018/11/json.png)
+
+Les mot de passe sont chiffrés par algorithme `sha256` en utilisant le `'salt'`.
+
+```python
+password = salt + password + login
+mdp = hashlib.sha256(password.encode()).hexdigest()
+```
+Ensuite vous pouvez cliquer `verify` pour verifier les info. Il y aura un message box qui indique si le résultat est correct.
+
+![result](images/2018/11/result.png)
+
+
+Vous pouvez aussi cliquer `crypto`. Il va afficher une autre fenêtre sur laquelle vous pouvez saisir un nom de fichier existe pour le chiffrer dans un autre fichier binaire.
+
+![fichier](images/2018/11/fichier.png)
+
+
+![crypted](images/2018/11/crypted.png)
+
+
+Les codes complète sont dans le fichier `TP3.py`.
+
+
 ### TP4 - Matplotlib
 #### 4.1 Introduction simple
 Matplotlib est une bibliothèque du langage de programmation Python destinée à tracer et visualiser des données sous formes de graphiques.Elle peut être combinée avec les bibliothèques python de calcul scientifique NumPy et SciPy.
@@ -542,5 +578,62 @@ plt.show()
 ![image_traitement](../images/2018/11/image-traitement.png)
 
 ### TP7 - Serveur et page web (Django)
+
+Nous avons essayé de lancer un server avec les codes fournis.
+
+![index](images/2018/11/index.png)
+
+![server](images/2018/11/server.png)
+
+Pour la partie login et afficher les données, nous avons utilisé `Django`.
+
+#### Login et afficher les données
+Afin de lancer le projet django, il faut entrer dans le dossier `TP7` et exécuter la command `python3 manage.py runserver` (ou `manage.py runserver` sous Windows).
+
+Nous avons fait une interface web pour que les utilisateur puissent connecter au système avec login et mot de passe. Le URL de la page login est [http://localhost:8000/site](http://localhost:8000/site).
+
+![login_web](images/2018/11/login-web.png)
+
+- **Username** : admin
+- **Password** : password
+
+Si le login ou le mot passe n'est pas correct, il y aura une message d'erreur.
+
+![error](images/2018/11/error.png)
+
+Après accéder à la page d'accueil ( [http://localhost:8000/site/index](http://localhost:8000/site/index) ) avec le login et mot de passe, il y aura une liste des informations des étudiants. Nous avons stocké ces informations dans la base de données et les récupérer avec django.
+
+> Le status de login est stocké dans le COOKIES donc vous pouvez rester connecter dans 3600 secondes.
+
+Nous avons créé des `template` pour afficher les résultat et des modèles pour stocker ou récupérer les données depuis base de données.
+
+```python
+def index(req):
+    username = req.COOKIES.get('username','')
+    etudiants = Etudiant.objects.all()
+
+    return render_to_response('index.html' ,{'username':username, 'etudiants':etudiants})
+```
+
+```html
+<table>
+    <thead>
+
+      <td>Nom</td>
+        <td>Prenom</td>
+    <td>Age</td>
+    </thead>
+  {% for e in etudiants %}
+    <tr>
+      <td>{{e.nom}}</td>
+        <td>{{e.prenom}}</td>
+        <td>{{e.age}}</td>
+    </tr>
+  {% endfor %}
+</table>
+```
+
+Les codes complètes sont dane le dossier `TP7/tp7_site`.
+
 
 ### TP8 - Prog. asynchrone et fourmis
