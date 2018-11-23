@@ -108,11 +108,6 @@ Résultat:
 
 ![](tp1_etu.png)
 
-###### Des point importants
-
-(莉莉这里你看一下有没有需要注意的点。。。)
-
-
 ### TP2 - Tkinter
 #### 2.1 Introduction simple
 Tkinter (de l'anglais Tool kit interface) est la bibliothèque graphique libre d'origine pour le langage Python, permettant la création d'interfaces graphiques. Tkinter est intégré au paquet d'installation de python pour gérer rapidement des interfaces graphiques simples.
