@@ -6,6 +6,7 @@ PENG Hanyuan & YAN Wenli
 
 > Les codes du TP sont fournis dans le fichier `Code_TP.zip`.
 
+** Nous utilisons Python3.6 pour tous les TPs **
 
 ### TP1 - Fichiers
 
