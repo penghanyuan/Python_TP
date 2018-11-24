@@ -4,9 +4,8 @@ PENG Hanyuan & YAN Wenli
 
 ---
 
-> Les codes du TP sont fournis dans le fichier `Code_TP.zip`.
+> Les codes du TP sont fournis dans le fichier `Code_TP.zip`. (Python3.6)
 
-** Nous utilisons Python3.6 pour tous les TPs **
 
 ### TP1 - Fichiers
 
@@ -368,9 +367,14 @@ def mesh_3d():
     ax.plot_surface(X,Y,Z)
     plot.show()
 ```
+
 ![3d](images/2018/11/3d.png)
+
+
 #### Conclusion
 Après des recherches et études, on peut trouver que cet outil Matplotlib est très pratique, il peut faire nombreux types de figures avec plusieurs attributs, comme couleur, forme, taille etc. Il peut bien montrer des données avec une façon visuelle.
+
+
 
 ### TP5 - Base de données
 #### 5.1 Introduction simple - SQLite3
@@ -379,6 +383,8 @@ Commandes indispensables : create, select...from..., insert.
 #### 5.2 Travail du TP
 ##### 5.2.1 Création de la base de donnée.
 On a lit des fichiers `.csv` et parsé des informations dans ces fichiers. On a crée une base de donnée qui contient des classes correspondantes à chaque ficher, `Regions`, `Departements`, `Communes`.
+
+`Attention:` Si la base de donnée existe déjà, on ne peut plus la générer à nouveau, si nécessaire supprimez-la du dossier TP5.
 
 Par exemple:
 ```python
