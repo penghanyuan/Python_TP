@@ -834,7 +834,7 @@ Le fichier `fourmis.xml`:
 
 Après l'exécution , il va générer un fichier `ant.jpg` qui stocke les movements des fourmis.
 
-Le code est dans le fichier `ant.py` avec les commentaires.
+Le code est dans le fichier `TP8/ant.py` avec les commentaires.
 
 Une exemple:
 ![ant](images/2018/11/ant.png)
