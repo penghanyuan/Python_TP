@@ -789,6 +789,23 @@ Les codes complètes sont dane le dossier `TP7/tp7_site`.
 
 
 ### TP8 - Prog. asynchrone et fourmis
+#### Prog. asynchrone
+Nous avons testé une même calcul ci-dessous avec `multithread` et `multiprocessing`.
+
+```python
+def calcul_long():
+    n = 1E7
+    while n>0:
+        n -= 1
+```
+
+##### Multi-thread (5 threads)
+![thread](images/2018/11/thread.png)
+
+##### Multi-processing (5 processus)
+![process](images/2018/11/process.png)
+
+Pour ce calcul, multi-processing est plus vite que multi-threads.
 
 #### Peinture avec fourmis
 Afin de faire dessiner, nous avons utilisé `numpy` pour générer une matrice de dimension `500*500*3` pour stocker les pixels. Et nous avons utiliser `scipy` pour stocker la matrice dans une fichier image.

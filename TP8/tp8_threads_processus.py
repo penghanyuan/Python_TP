@@ -11,29 +11,28 @@ import random
 
 t = time.time()
 def calcul_long():
-    print(os.getpid())
+    print("pid:" + str(os.getpid()))
     n = 1E7
     while n>0:
         n -= 1
-    time.sleep(random.random() * 3)
 
 
     #print("Line cpu", time.time() - t)
 
 
-def calcul_long2(threadName, delay, counter):
-    while counter:
-#        if exitFlag:
-#            (threading.Thread).exit()
-        time.sleep(delay)
-        counter -= 1
-        print("%s: %s" % (threadName, time.ctime(time.time())))
+# def calcul_long2(threadName, delay, counter):
+#     while counter:
+# #        if exitFlag:
+# #            (threading.Thread).exit()
+#         time.sleep(delay)
+#         counter -= 1
+#         print("%s: %s" % (threadName, time.ctime(time.time())))
 
 
 def test1_multiThreads():
     try:
-       thread.start_new_thread( calcul_long1, ("Thread-1", 2, ) )
-       thread.start_new_thread( calcul_long1, ("Thread-2", 4, ) )
+       thread.start_new_thread( calcul_long, ("Thread-1", 2, ) )
+       thread.start_new_thread( calcul_long, ("Thread-2", 4, ) )
     except:
        print("Error: unable to start thread")
 
@@ -80,18 +79,18 @@ def test2_multiThreads():
 
 
 
-def test1_multiProcessus():
-    with Pool(3) as p:
-        #print(p.map(calcul_long, args=())
-        calcul_long()
+# def test1_multiProcessus():
+#     with Pool(3) as p:
+#         #print(p.map(calcul_long, args=())
+#         calcul_long()
 
 def test2_multiProcessus():
     print('Parent process %s.' % os.getpid())
 
-    #p = Pool(5)
-    #for i in range(5):
-    with Pool(5) as p:
-        p.apply_async(calcul_long())
+    p = Pool()
+    for i in range(5):
+    # with Pool(5) as p:
+        p.apply_async(calcul_long)
     print('Waiting for all subprocesses done...')
     p.close()
     p.join()
@@ -99,7 +98,8 @@ def test2_multiProcessus():
 
 
 # Main
-#test1_multiThreads()
-#test2_multiThreads()
+# test2_multiThreads()
+
 test2_multiProcessus()
+
 print("Line cpu", time.time() - t)
