@@ -789,3 +789,52 @@ Les codes complètes sont dane le dossier `TP7/tp7_site`.
 
 
 ### TP8 - Prog. asynchrone et fourmis
+
+#### Peinture avec fourmis
+Afin de faire dessiner, nous avons utilisé `numpy` pour générer une matrice de dimension `500*500*3` pour stocker les pixels. Et nous avons utiliser `scipy` pour stocker la matrice dans une fichier image.
+
+Pour les paramètres, nous avons utilisé un fichier `.xml` pour passer les paramètres au programme.
+
+La commande: `python3 ant.py nom_du_fichier.xml`
+
+exp:
+![param](images/2018/11/param.png)
+
+Le fichier `fourmis.xml`:
+
+```xml
+<parametres nombre="2" iteration="100000">
+<fourmis>
+   <couleur_deposee>192, 0, 255</couleur_deposee>
+   <couleur_suivi>255, 155, 3</couleur_suivi>
+   <proba>0.04,0.95,0.01</proba>
+   <type>0</type>  <!-- 0 => Do, 1 =>Dd  -->
+   <proba_suivi>0.78</proba_suivi>
+</fourmis>
+<fourmis>
+   <couleur_deposee>255, 155, 3</couleur_deposee>
+   <couleur_suivi>76,68,181</couleur_suivi>
+   <proba>0.01,0.98,0.01</proba>
+   <type>1</type>  <!-- 0 => Do, 1 =>Dd  -->
+   <proba_suivi>0.90</proba_suivi>
+</fourmis>
+</parametres>
+
+```
+
+- nombre: le nombre de fourmis
+- iteration: le nombre d'itération
+- couleur_deposee: tableau de couleur RGB déposée , séparé par `,`
+- couleur_suivi: tableau de couleur RGB suivie , séparé par `,`
+- proba:  les probabilités qui régissent le mouvement de la fourmi : (Pg, Pd, Pt)
+- type: - le type de mouvement : 0 => Do, 1 => Dd
+- proba_suivi:  la probabilité de suivre la coureur suivie (si elle est trouvée) : Ps
+
+> Nous n'avons pas finaliser la partie convolution, donc la taille de chaque fourmis est toujours `1`.
+
+Après l'exécution , il va générer un fichier `ant.jpg` qui stocke les movements des fourmis.
+
+Le code est dans le fichier `ant.py` avec les commentaires.
+
+Une exemple:
+![ant](images/2018/11/ant.png)
