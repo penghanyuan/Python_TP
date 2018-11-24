@@ -372,6 +372,163 @@ def mesh_3d():
 Après des recherches et études, on peut trouver que cet outil Matplotlib est très pratique, il peut faire nombreux types de figures avec plusieurs attributs, comme couleur, forme, taille etc. Il peut bien montrer des données avec une façon visuelle.
 
 ### TP5 - Base de données
+#### 5.1 Introduction simple - SQLite3
+SQLite3 est une bibliothèque de gestion de bases de données relationnelle. Elle est déjà en général installée (windows, linux...).
+Commandes indispensables : create, select...from..., insert.
+#### 5.2 Travail du TP
+##### 5.2.1 Création de la base de donnée.
+On a lit des fichiers `.csv` et parsé des informations dans ces fichiers. On a crée une base de donnée qui contient des classes correspondantes à chaque ficher, `Regions`, `Departements`, `Communes`.
+
+Par exemple:
+```python
+# conding=utf-8
+from sqlalchemy import *
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+import csv
+from sqlalchemy.orm import relationship
+import xml.etree.ElementTree as ET
+
+engine = create_engine('sqlite:///database_tp5.db:', echo=False)
+Base = declarative_base()
+
+class Departements(Base):
+    __tablename__ = 'departements'
+    code_departement = Column(String(50), primary_key=True)
+    nom_departement = Column(String(50))
+    nb_arrondi = Column(Integer)
+    nb_canton = Column(Integer)
+    nb_commune = Column(Integer)
+    population_municpale = Column(Integer)
+    population_totale = Column(Integer)
+
+    code_region = Column(Integer, ForeignKey('regions.code_region'))
+    region = relationship("Regions", back_populates="departements")
+
+    communes = relationship("Communes", back_populates="departements")
+
+    #...
+    Base.metadata.create_all(engine)
+```
+
+```python
+with open('data_Base_de_donnees/departements.csv', newline='', encoding = 'ISO-8859-1') as csvfile:
+    count = 0;
+    spamreader = csv.reader(csvfile, delimiter=';')
+    for row in spamreader:
+        count += 1;
+        if count > 8:
+            departement = Departements()
+            departement.code_region = row[0]
+            departement.code_departement = row[2]
+            departement.nom_departement = row[3]
+            departement.nb_arrondi = row[4].replace(' ', '')
+            departement.nb_canton = row[5].replace(' ', '')
+            departement.nb_commune = row[6].replace(' ', '')
+            departement.population_municpale = row[7].replace(' ', '')
+            departement.population_totale = row[8].replace(' ', '')
+            session.add(departement)
+    session.commit()
+```
+![tp5_bd](images/2018/11/tp5-bd.png)
+
+![data](images/2018/11/data.png)
+On a appris comment creer la base de donnée avec des class et comment définir des attributs et des realtions tels que la clé étrangère.
+
+##### 5.2.2 Calculer et afficher les populations totales de chaque département et région.
+On fait des requêtes de la base de donnée en utilisant `session.query()`.
+
+```python
+def comparerPopulations():
+    for row in session.query(Regions).all():
+        totale_region = 0
+        for departement_item in row.departements:
+            totale_region += departement_item.population_totale
+        print(row.nom_region, totale_region)
+```  
+![population_totale](images/2018/11/population-totale.png)
+
+##### 5.2.3 Requêtes
+Déterminer les communes ayant le même nom et un département différent. Afficher le nom de la commune suivi de la liste des n° de départements.
+```python
+def trouverMemeNom():
+    lstCommunes = session.query(distinct(Communes.nom_commune)).all() #return colonne nom_commune
+
+    for row in lstCommunes:
+        print("------------------------------------------")
+        # print(row[0]) #print le nom de commune
+        lstDepartements = session.query(Communes.nom_commune.label('nom_commune'), Communes.code_departement.label('code_departement')).filter(Communes.nom_commune == row[0]).all()
+
+        for d in lstDepartements:
+            print(d[0],"\t\t", d[1])
+```
+![trouver_meme_nom](images/2018/11/trouver-meme-nom.png)
+
+
+##### 5.2.4 Sauvegarde et lecture de base de données (xml)
+Ecrire une fonction pour sauvegarder la base dans un fichier XML et une autre pour charger la base à partir de ce fichier.
+
+Sauvegarde au xml: une fonction pour sauvegarder la base dans un fichier XML.
+```python
+def xml_to_database():
+    tree = ET.parse('Regions.xml')
+    root = tree.getroot()
+    # print('root-tag:',root.tag,',root-attrib:',root.attrib,',root-text:',root.text)
+    for child in root:
+        region = Regions()
+        region.code_region = child.find('code_region').text
+        region.nom_region = child.find('nom_region').text
+        region.nb_arrondi = child.find('nb_arrondi').text
+        region.nb_canton = child.find('nb_canton').text
+        region.nb_commune = child.find('nb_commune').text
+        region.population_municpale = child.find('population_municpale').text
+        region.population_totale = child.find('population_totale').text
+        session.add(region)
+    session.commit()
+```
+![s_xml](images/2018/11/s-xml.png)
+
+Lecture depuis xml: une fonction pour charger la base à partir de ce fichier.
+```python
+with open(nomFichier, "a") as outfile:
+
+    rows_regions = session.query(Regions).all()
+    outfile.write('<?xml version="1.0" ?>\n')
+    outfile.write('<mydata>\n')
+    for row in rows_regions:
+        outfile.write('  <row>\n')
+        outfile.write('    <code_region>%s</code_region>\n' % row.code_region)
+        outfile.write('    <nom_region>%s</nom_region>\n' % row.nom_region)
+        outfile.write('    <nb_arrondi>%s</nb_arrondi>\n' % row.nb_arrondi)
+        outfile.write('    <nb_canton>%s</nb_canton>\n' % row.nb_canton)
+        outfile.write('    <nb_commune>%s</nb_commune>\n' % row.nb_commune)
+        outfile.write('    <population_municpale>%s</population_municpale>\n' % row.population_municpale)
+        outfile.write('    <population_totale>%s</population_totale>\n' % row.population_totale)
+
+        outfile.write('  </row>\n')
+    outfile.write('</mydata>\n')
+```
+![lecture_xml](images/2018/11/lecture-xml.png)
+##### 5.2.5 Ajout d'une table NouvellesRegions
+```python
+def addNouvellesRegions():
+    spamreader = csv.reader(csvfile, delimiter=';')
+    for row in spamreader:
+        count += 1;
+        if count > 8:
+            print(row)
+            region = Regions()
+            region.code_region = row[0]
+            region.nom_region = row[1]
+            region.nb_arrondi = row[2].replace(' ', '')
+            region.nb_canton = row[3].replace(' ', '')
+            region.nb_commune = row[4].replace(' ', '')
+            region.population_municpale = row[5].replace(' ', '')
+            region.population_totale = row[6].replace(' ', '')
+            session.add(region)
+    session.commit()
+```
+![nouvelle_region](images/2018/11/nouvelle-region.png)
 
 ### TP6 - Numpy et Scipy
 Dans ce TP, on a bien compris des fonctionnalités et des caractéristiques de Numpy et Scripy en réalisant tous les exercices.
